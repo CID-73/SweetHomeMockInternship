@@ -744,24 +744,21 @@ public class FurnitureTable extends JTable implements View, Printable {
     DefaultTableColumnModel printableColumnModel = new DefaultTableColumnModel();
     TableColumnModel columnModel = getColumnModel();
     List<TableColumn> printedColumns = new ArrayList<TableColumn>();
-    int nameColumnIndex = -1;
     boolean levelColumnDisplayed = false;
     for (int columnIndex = 0, n = columnModel.getColumnCount(); columnIndex < n; columnIndex++) {
       TableColumn tableColumn = columnModel.getColumn(columnIndex);
       printedColumns.add(tableColumn);
-      if (tableColumn.getIdentifier() == HomePieceOfFurniture.SortableProperty.NAME) {
-        nameColumnIndex = columnIndex;
-      } else if (tableColumn.getIdentifier() == HomePieceOfFurniture.SortableProperty.LEVEL) {
+      if (tableColumn.getIdentifier() == HomePieceOfFurniture.SortableProperty.LEVEL) {
         levelColumnDisplayed = true;
       }
     }
     if (levelColumnPrinted 
         && !levelColumnDisplayed
         && columnModel instanceof FurnitureTableColumnModel) {
-      // Add temporarily level column after name column (or as first column) in printed columns only 
+      // Add temporarily level column as last printed column (displayed columns aren't changed) 
       TableColumn levelColumn = ((FurnitureTableColumnModel)columnModel).getAvailableColumn(
           HomePieceOfFurniture.SortableProperty.LEVEL);
-      printedColumns.add(nameColumnIndex + 1, levelColumn);
+      printedColumns.add(levelColumn);
     }
     final DefaultTableCellRenderer defaultRenderer = new DefaultTableCellRenderer();
     defaultRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
